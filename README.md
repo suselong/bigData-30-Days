@@ -2,11 +2,12 @@
 > 需要有JAVA SE的基础，如果是JAVA开发工程师，学习效率会非常高。如果不会也没关系，先学JAVA，作者开始学也不会JAVA。
 
 #### [Day01 学习路线&Linux基础](Day01学习路线&Linux/README.md)
-- 课前规划介绍
-- Linux分类
-- Linux安装
-- ★ Linux目录结构
-- 远程连接工具注意事项
+- [课前规划介绍](Day01学习路线&Linux/README.md#课前规划介绍)
+- [Linux分类](Day01学习路线&Linux/README.md#Linux分类)
+- [Linux安装](Day01学习路线&Linux/README.md#Linux安装)
+- [★ Linux目录结构](Day01学习路线&Linux/README.md#Linux目录结构)
+- [远程连接工具注意事项](Day01学习路线&Linux/README.md#远程连接工具注意事项)
+- [★★★ 常用命令](Day01学习路线&Linux/README.md#常用命令)
 - ★★★ Linux命令行
 #### [Day02 Hadoop简介&架构](Day02Hadoop简介&架构/README.md)
 - [什么是大数据？](Day02Hadoop简介&架构/README.md#什么是大数据)
