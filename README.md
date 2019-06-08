@@ -8,7 +8,6 @@
 - [★ Linux目录结构](Day01学习路线&Linux/README.md#Linux目录结构)
 - [远程连接工具注意事项](Day01学习路线&Linux/README.md#远程连接工具注意事项)
 - [★★★ 常用命令](Day01学习路线&Linux/README.md#常用命令)
-- ★★★ Linux命令行
 #### [Day02 Hadoop简介&架构](Day02Hadoop简介&架构/README.md)
 - [什么是大数据？](Day02Hadoop简介&架构/README.md#什么是大数据)
 - [大数据运用场景](Day02Hadoop简介&架构/README.md#大数据引用场景)
