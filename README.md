@@ -8,9 +8,15 @@
 - ★ Linux目录结构
 - 远程连接工具注意事项
 - ★★★ Linux命令行
-#### [Day02 Hadoop简介&起源](Day02Hadoop简介&起源/README.md)
+#### [Day02 Hadoop简介&架构](Day02Hadoop简介&架构/README.md)
 - 什么是大数据？
 - 大数据引用场景
 - 什么是Hadoop？
 - HDFS的运行机制
-- HDFS集群安装部署
+- NameNode简介
+- NameNode节点工作机制
+- NataNode简介
+- DataNode节点工作机制
+- HDFS读流程
+- HDFS写流程
+#### [Hadoop集群安装部署](Day03Hadoop集群安装部署/README.md)
