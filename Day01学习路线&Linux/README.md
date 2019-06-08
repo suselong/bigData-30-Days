@@ -17,8 +17,7 @@
 + 通过虚拟机VMware软件进行安装，安装教程请谷歌
 
 ### Linux目录结构
-
-    ![](img/liunx_dir.png)
+![](img/liunx_dir.png)
 + bin: 存放二进制可执行文件
 + sbin: 存放二进制可执行文件，**只有root用户可访问**
 + ★ etc: 存放系统配置文件，例如 环境变量
