@@ -1,7 +1,7 @@
 ### 学习前提
 > 需要有JAVA SE的基础，如果是JAVA开发工程师，学习效率会非常高。如果不会也没关系，先学JAVA，作者开始学也不会JAVA。
 
-#### [Day01 学习路线&Linux基础](Day1学习路线&Linux/README.md)
+#### [Day01 学习路线&Linux基础](Day01学习路线&Linux/README.md)
 - 课前规划介绍
 - Linux分类
 - Linux安装
