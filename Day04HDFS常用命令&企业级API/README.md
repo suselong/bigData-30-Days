@@ -72,5 +72,5 @@ public class hadhoopDemo02 {
 > + 配置Hadoop环境变量
 > > + 增加HADOOP_HOME   E:\hadoop-2.8.5
 > > + PATH添加 E:\hadoop-2.8.5\bin  E:\hadoop-2.8.5\sbin
-> + [重要:下载并添加编号的winutils包，放到目录E:\hadoop-2.8.5\bin下](软件)
-+ [常用企业级API代码](HadoopAPI\src\main\java\HDFSClientAPI.java)
+> + [重要:下载并添加编译的winutils包，放到目录E:\hadoop-2.8.5\bin下](软件)
++ [常用企业级API代码](HadoopAPI/src/main/java/HDFSClientAPI.java)
