@@ -1,8 +1,8 @@
 ### HDFS客户端操作方式介绍
-+ 网页形式(测试使用)如图
-* ![](img/hadoop网页截图.png)
-+ 命令行模式(测试、调试使用)               
-* ![](img/命令行模式.png)
++ 网页形式(测试使用)如图<br/>
+![](img/hadoop网页截图.png)
++ 命令行模式(测试、调试使用) <br/>              
+![](img/命令行模式.png)
 + 企业级API(开发使用)
 ```
 public class hadhoopDemo02 {
@@ -56,9 +56,9 @@ public class hadhoopDemo02 {
 + hdfs dfs -cat 文件 | tail -N：查看文件内容的最后N行
 > - 例如：hdfs dfs -cat /test | tail -2
 + hdfs dfs -count 目录：查看目录中有多少文件
-> - 显示顺序是(左到右)文件夹数量、文件数量、文件大小
+> - 显示顺序是(左到右)文件夹数量、文件数量、文件大小<br/>
 ![](img/查看目录文件数量.png)
-+ hdfs dfs -df 目录：查看空间大小 加上-h按照G进行统计
++ hdfs dfs -df 目录：查看空间大小 加上-h按照G进行统计<br/>
 ![](img/df命令.png)
 + hdfs dfs -setrep 1 文件 设置文件副本数，重启后也生效
 > - 例如：hdfs dfs -setrep 2 /test
@@ -74,5 +74,5 @@ public class hadhoopDemo02 {
 > > + PATH添加 E:\hadoop-2.8.5\bin  E:\hadoop-2.8.5\sbin
 > + [重要:下载并添加编译的winutils包，放到目录E:\hadoop-2.8.5\bin下](软件)
 + [常用企业级API代码](HadoopAPI/src/main/java/HDFSClientAPI.java)
-+ 测试结果：
++ 测试结果：<br/>
 ![](img/API测试结果.png)
