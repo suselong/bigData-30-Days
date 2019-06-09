@@ -92,11 +92,11 @@ DataNode的心跳，则任务该节点不可用
 2. NameNode返回是否可以上传.
 3. Client会先对文件进行切分，比如一个Block块128M，文件有300M会被切分为3个块，两个128M，一个44M，请求第一个Block该传输
 到哪些DataNode服务器上.
-4. NameNode返回可以存储的DataNode节点.
-5. client请求一台DataNode上传数据（本质上是一个RPC调用，建立pipeline），第一个DataNode收到请求会继续调用第二个DataNod，
+4. NameNode返回可以存储的DataNode节点信息.
+5. Client请求一台DataNode上传数据（本质上是一个RPC调用，建立pipeline），第一个DataNode收到请求会继续调用第二个DataNod，
 然后第二个调用第三个DataNode，将整个pipeline建立完成，逐级返回客户端.
-6. client开始往A上传第一个block（先从磁盘读取数据放到一个本地内存缓存），以packet为单位（一个packet为64kb），当然在写入
+6. Client开始往A上传第一个block（先从磁盘读取数据放到一个本地内存缓存），以packet为单位（一个packet为64kb），当然在写入
 的时候DataNode会进行数据校验，它并不是通过一个packet进行一次校验,而是以chunk为单位进行校验（512byte），第一台DataNode收到
 一个packet就会传给第二台，第二台传给第三台；第一台每传一个packet会放入一个应答队列等待应答.
-7. 当一个block传输完成之后，client再次请求NameNode上传第二个block的服务器，循环3-6步.
-8. 所有块写完后调用关闭FSdataInputStream，并返回信息给NameData.
+7. 当一个block传输完成之后，Client再次请求NameNode上传第二个block的服务器，循环3-6步.
+8. 所有块写完后调用关闭FSDataInputStream，并返回信息给NameData.
