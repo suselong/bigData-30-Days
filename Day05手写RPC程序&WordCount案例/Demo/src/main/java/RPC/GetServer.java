@@ -1,3 +1,4 @@
+package RPC;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.ipc.RPC;
 
