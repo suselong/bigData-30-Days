@@ -1,8 +1,8 @@
 ### HDFS客户端操作方式介绍
 + 网页形式(测试使用)如图
-![](img/hadoop网页截图.png)
-+ 命令行模式(测试、调试使用)
-![](img/命令行模式.png)
+* ![](img/hadoop网页截图.png)
++ 命令行模式(测试、调试使用)               
+* ![](img/命令行模式.png)
 + 企业级API(开发使用)
 ```
 public class hadhoopDemo02 {
@@ -62,3 +62,15 @@ public class hadhoopDemo02 {
 ![](img/df命令.png)
 + hdfs dfs -setrep 1 文件 设置文件副本数，重启后也生效
 > - 例如：hdfs dfs -setrep 2 /test
+### ★★★ 企业级别API
++ 环境配置(Windos环境)
+> + 安装JAVA
+> + 配置JAVA环境变量
+> > + 新增JAVA_HOME  C:\Program Files\Java\jdk1.8.0_31；
+> > + PATH添加:C:\Program Files\Java\jdk1.8.0_31\bin  C:\Program Files\Java\jdk1.8.0_31\jre\bin
+> + 把下载好的Hadoop-2.8.5解压到相应路径
+> + 配置Hadoop环境变量
+> > + 增加HADOOP_HOME   E:\hadoop-2.8.5
+> > + PATH添加 E:\hadoop-2.8.5\bin  E:\hadoop-2.8.5\sbin
+> + [重要:下载并添加编号的winutils包，放到目录E:\hadoop-2.8.5\bin下](软件)
++ [常用企业级API代码](HadoopAPI\src\main\java\HDFSClientAPI.java)
