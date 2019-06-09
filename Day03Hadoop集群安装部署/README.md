@@ -27,7 +27,8 @@
 + 修改配置文件
 > + vi /root/hd/hadoop-2.8.5/etc/hadoop/hadoop-env.sh 配置JDK路径 如 export JAVA_HOME=/root/hd/jdk1.8.0_144
 > + vi /root/hd/hadoop-2.8.5/etc/hadoop/core-site.xml 配置HDFS主节点
-```<configuration>
+```
+<configuration>
     <!--配置HDFS-->
     <property>
     <name>fs.defaultFS</name>
@@ -80,4 +81,4 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 ```
 > - 注：所有节点都需要修改，不然本节点还会有备份
 > - 拷贝小技巧：scp -r 文件名 目标主机名:$PWD  相同的路径可以直接使用$PWD代替
-
++ 扩展：[其他常用配置参数参考](https://www.cnblogs.com/yinghun/p/6230436.html)

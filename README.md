@@ -19,6 +19,11 @@
 - [★★★DataNode节点工作机制](Day02Hadoop简介&架构/README.md#DataNode节点工作机制)
 - [★★★HDFS读流程](Day02Hadoop简介&架构/README.md#HDFS读流程)
 - [★★★HDFS写流程](Day02Hadoop简介&架构/README.md#HDFS写流程)
-#### [Hadoop集群安装部署](Day03Hadoop集群安装部署/README.md)
+#### [Day03 Hadoop集群安装部署](Day03Hadoop集群安装部署/README.md)
 - [准备工作](Day03Hadoop集群安装部署/README.md#准备工作)
 - [安装Hadoop集群](Day03Hadoop集群安装部署/README.md#安装Hadoop集群)
+#### [Day04 HDFS常用命令&企业级API](Day04HDFS常用命令&企业级API/README.md)
+- [HDFS客户端操作方式介绍](Day04HDFS常用命令&企业级API/README.md#HDFS客户端操作方式介绍)
+- [★★★HDFS常用命令(客户端)](Day04HDFS常用命令&企业级API/README.md#HDFS常用命令)
+- [★★★★HDFS企业级API](Day04HDFS常用命令&企业级API/README.md#HDFS企业级API)
+
