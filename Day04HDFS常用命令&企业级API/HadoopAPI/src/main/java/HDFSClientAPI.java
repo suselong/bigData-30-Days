@@ -1,9 +1,11 @@
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.*;
+import org.apache.hadoop.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -89,6 +91,8 @@ public class HDFSClientAPI {
   public void hdfsReadData01() throws IOException {
     //1. 拿到文件流
     FSDataInputStream openFile = fileSystem.open(new Path("/test.txt"));
+    // 可以设置偏移量，可以可以不设置
+    openFile.seek(200);
     //2. 定义一个字节数组用于接收流
     byte[] buf = new byte[1024];
     //3. 读取文件到字节数组
@@ -98,7 +102,28 @@ public class HDFSClientAPI {
     //5. 关闭文件和HDFS
     openFile.close();
     fileSystem.close();
+  }
 
+  /**
+   * 读取数据方式2：缓冲流方式读取，效率高
+   *
+   * @throws IOException
+   */
+  @Test
+  public void hdfsReadData02() throws IOException {
+    //1. 拿到文件流
+    FSDataInputStream openFile = fileSystem.open(new Path("/test.txt"));
+    //2. 缓冲流，效率高
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(openFile));
+    String line;
+    //3. 按行读取数据
+    while ((line = bufferedReader.readLine()) != null) {
+      System.out.println(line);
+    }
+    //4. 关闭资源
+    bufferedReader.close();
+    openFile.close();
+    fileSystem.close();
   }
 
   /**
@@ -111,7 +136,6 @@ public class HDFSClientAPI {
     fileSystem.rename(new Path("/oldReFile.txt"), new Path("/mkdirAPI/newReFile.txt"));
     fileSystem.close();
   }
-  //三种常用的读取HDFS中的数据
 
   /**
    * HDFS删除文件或文件夹
@@ -125,4 +149,41 @@ public class HDFSClientAPI {
     fileSystem.close();
   }
 
+  /**
+   * 写入数据方式1：字节方式写入
+   * @throws IOException
+   */
+  @Test
+  public void hdfsWriteData01() throws IOException {
+    //1. 定义输出流
+    FSDataOutputStream outFile = fileSystem.create(new Path("/test.txt"), false);
+    //2. 定义输入流
+    FileInputStream inFile = new FileInputStream("E:\\testData.txt");
+    //3. 字节数组
+    byte[] bytes = new byte[1024];
+    //4. 按行读取出来写入输出流
+    int read;
+    while ((read = inFile.read(bytes)) != -1) {
+      outFile.write(bytes, 0, read);
+    }
+    //5. 关闭
+    inFile.close();
+    outFile.close();
+    fileSystem.close();
+  }
+
+  /**
+   * 写入数据方式2：缓冲流写入
+   * @throws IOException
+   */
+  @Test
+  public void hdfsWriteData02() throws IOException {
+    FSDataOutputStream outFile = fileSystem.create(new Path("/test.txt"), false);
+    FileInputStream inFile = new FileInputStream(new File("E:\\testData.txt"));
+    outFile.write(inFile.toString().getBytes());
+    // 关闭流，这里关闭HDFS比较特殊，需要使用IOUtils进行关闭
+    IOUtils.closeStream(outFile);
+    inFile.close();
+    fileSystem.close();
+  }
 }
