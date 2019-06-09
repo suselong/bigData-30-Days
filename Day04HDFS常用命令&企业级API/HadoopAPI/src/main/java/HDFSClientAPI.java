@@ -92,7 +92,7 @@ public class HDFSClientAPI {
     //1. 拿到文件流
     FSDataInputStream openFile = fileSystem.open(new Path("/test.txt"));
     // 可以设置偏移量，可以可以不设置
-    openFile.seek(200);
+//    openFile.seek(200);
     //2. 定义一个字节数组用于接收流
     byte[] buf = new byte[1024];
     //3. 读取文件到字节数组
@@ -156,7 +156,7 @@ public class HDFSClientAPI {
   @Test
   public void hdfsWriteData01() throws IOException {
     //1. 定义输出流
-    FSDataOutputStream outFile = fileSystem.create(new Path("/test.txt"), false);
+    FSDataOutputStream outFile = fileSystem.create(new Path("/test001.txt"), false);
     //2. 定义输入流
     FileInputStream inFile = new FileInputStream("E:\\testData.txt");
     //3. 字节数组
@@ -178,7 +178,7 @@ public class HDFSClientAPI {
    */
   @Test
   public void hdfsWriteData02() throws IOException {
-    FSDataOutputStream outFile = fileSystem.create(new Path("/test.txt"), false);
+    FSDataOutputStream outFile = fileSystem.create(new Path("/test002.txt"), false);
     FileInputStream inFile = new FileInputStream(new File("E:\\testData.txt"));
     outFile.write(inFile.toString().getBytes());
     // 关闭流，这里关闭HDFS比较特殊，需要使用IOUtils进行关闭
