@@ -26,4 +26,7 @@
 - [HDFS客户端操作方式介绍](Day04HDFS常用命令&企业级API/README.md#HDFS客户端操作方式介绍)
 - [★★★HDFS常用命令(客户端)](Day04HDFS常用命令&企业级API/README.md#HDFS常用命令)
 - [★★★★HDFS企业级API](Day04HDFS常用命令&企业级API/README.md#HDFS企业级API)
-
+#### [Day05手写RPC程序&WordCount案例](Day05手写RPC程序&WordCount案例/README.md)
+- [手写RPC程序](Day05手写RPC程序&WordCount案例/README.md#手写RPC程序)
+- [WordCount案例](Day05手写RPC程序&WordCount案例/README.md#WordCount案例)
+- [WordCount运行流程图](Day05手写RPC程序&WordCount案例/README.md#WordCount运行流程图)
