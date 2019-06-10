@@ -24,5 +24,7 @@
 1. [WordCountMapper](WordCountMR/src/main/java/WordCountMapper.java)
 2. [WordCountReducer](WordCountMR/src/main/java/WordCountReducer.java)
 3. [WordCountDriver](WordCountMR/src/main/java/WordCountDriver.java)
++ 测试结果(项目导入包后可以直接运行)<br/>
+![](img/测试结果.png)
 ### Yarn任务提交流程(Driver)
 ![](img/Yarn任务提交流程.png)
