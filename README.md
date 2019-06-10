@@ -30,3 +30,7 @@
 - [手写RPC程序](Day05手写RPC程序&WordCount案例/README.md#手写RPC程序)
 - [WordCount案例(自己编写的Mapper类，未使用Hadoop的Mapper类)](Day05手写RPC程序&WordCount案例/README.md#WordCount案例)
 - [WordCount运行流程图](Day05手写RPC程序&WordCount案例/README.md#WordCount运行流程图)
+#### [Day06MapReduce](Day06MapReduce/README.md)
+- [MapReduce核心编程思想](Day06MapReduce/README.md#MapReduce核心编程思想)
+- [MapReduce案例](Day06MapReduce/README.md#MapReduce案例)
+- [Yarn任务提交流程](Day06MapReduce/README.md#Yarn任务提交流程)
