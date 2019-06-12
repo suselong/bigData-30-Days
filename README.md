@@ -45,6 +45,6 @@
     - [x] [MapTask并行度与决定机制](Day07MapTask/README.md#MapTask并行度与决定机制)
     - [x] [MapTask工作机制](Day07MapTask/README.md#MapTask工作机制)
     - [x] [MapTask优化点](Day07MapTask/README.md#MapTask优化点)
-- [Day08Shuffle机制&MapReduce优化点]()
+- [Day08Shuffle机制&MapReduce优化点](Day08Shuffle机制&MapReduce优化点/README.md)
     - [x] [★★★★★Shuffle机制](Day08Shuffle机制&MapReduce优化点/README.md#Shuffle机制)
     - [x] [★★★MapReduce优化点](Day08Shuffle机制&MapReduce优化点/README.md#MapReduce优化点)
