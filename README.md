@@ -41,7 +41,7 @@
     - [x] [Hadoop中的序列化](Day06MapReduce/README.md#Hadoop数据类型)
     - [x] [手机流量统计案例](Day06MapReduce/README.md#手机流量统计案例)
     - [x] [MapReduce工作机制](Day06MapReduce/README.md#MapReduce工作机制)
--[Day07Job任务流程&分区&排序](Day07Job任务流程&分区&排序/README.md)
+- [Day07Job任务流程&分区&排序](Day07Job任务流程&分区&排序/README.md)
     - [x] [MapTask并行度与决定机制](Day07Job任务流程&分区&排序/README.md#MapTask并行度与决定机制)
     - [x] [MapTask工作机制](Day07Job任务流程&分区&排序/README.md#MapTask工作机制)
     - [x] [MapTask优化点](Day07Job任务流程&分区&排序/README.md#MapTask优化点)
