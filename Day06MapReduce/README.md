@@ -45,8 +45,31 @@ FileOutputFormat.setOutputPath(job, new Path("/wc/out"));
 > + 上传包到集群任意目录
 > + 执行 hadoop jar 包名 主类名，例如：hadoop jar job.jar com.finallong.WordCountMR.WorlCountDriver
 ![](img/测试结果.png)
-### Yarn任务提交流程(Driver)
+### Yarn架构
+- Resource Manager功能
+> 1. 处理客户端请求
+> 1. 监控NodeManager
+> 1. 启动或监控程序的运行
+> 1. 资源的分配和调度
+- Node Manager功能
+> 1. 管理单个节点的资源
+> 1. 处理来自Resource Manager的命令
+> 1. 处理程序命令
+> 1. container是Yarn中的资源抽象，它封装了某个节点上的多维度资源，如内存、CPU、磁盘、网络等，当ApplicationMaster向
+ResourceManager申请资源时候，ResourceManager向ApplicationMaster返回的资源便是一container表示的，Yarn会为每个任务分配
+一个container，且该任务只能使用container中描述的资源，需要注意的是，container是一个动态资源划分单温，是根据应用程序
+的需求动态生成的
 ![](img/Yarn任务提交流程.png)
+- 流程解读
+> 1. 用户向Yarn中提交应用程序，其中包括ApplicationMaster程序、启动ApplicationMaster命令、用户程序等；
+> 1. ResourceManager为该应用程序分配第一个Container，并与对应的NodeManager通信，要求它在这个Container中启动应用程序ApplicationMaster；
+> 1. ApplicationMaster首先向ResourceManager注册，这样用户可以直接通过ResourceManager查看应用程序运行状态，然后它将为各个人物
+申请资源，并监控他们的运行，重复4-7步，直到运行结束；
+> 1. ApplicationMaster采用轮询的方式通过RPC协议向ResourceManager申请和领取资源；
+> 1. NodeManager为任务设置到运行环境(包括环境变量、JAR包、二进制程序等)后，将任务启动命令写入一个脚本中，并通过运行该脚本启动任务；
+> 1. 各个任务通过某个RPC协议向ApplicationMaster汇报自己的状态和进度，以让ApplicationMaster随时掌握各个任务的运行状态，从而
+可以在任务失败时重启任务，在应用程序运行过程中，用户随时通过RPC向ApplicationMaster查询应用程序的当前运行状态
+> 1. 应用程序运行完成后，ApplicationMaster向ResourceManager注销并关闭自己
 ### Hadoop数据类型
 |Java数据类型|Hadoop数据类型|
 | ----|----|

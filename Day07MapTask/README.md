@@ -30,7 +30,4 @@ split_0中读取一行，给MapTask行起始offset和行内容。
     FileInputFormat.setInputPaths(job, new Path("/wc/flowin"));
     FileOutputFormat.setOutputPath(job, new Path("/wc/flowout"))
 ```
-### 自定义分区案例
-### 数据排序案例
-### Combiner合并组件案例
  
