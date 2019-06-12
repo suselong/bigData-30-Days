@@ -8,7 +8,7 @@
 - [x] [★ Linux目录结构](Day01学习路线&Linux/README.md#Linux目录结构)
 - [x] [远程连接工具注意事项](Day01学习路线&Linux/README.md#远程连接工具注意事项)
 - [x] [★★★ 常用命令](Day01学习路线&Linux/README.md#常用命令)
-### Day02-10 Hadoop
+### Day02-09 Hadoop
 - [Day02 Hadoop简介&架构](Day02Hadoop简介&架构/README.md)
     - [x] [什么是大数据？](Day02Hadoop简介&架构/README.md#什么是大数据)
     - [x] [大数据运用场景](Day02Hadoop简介&架构/README.md#大数据引用场景)
@@ -48,3 +48,11 @@
 - [Day08Shuffle机制&MapReduce优化点](Day08Shuffle机制&MapReduce优化点/README.md)
     - [x] [★★★★★Shuffle机制](Day08Shuffle机制&MapReduce优化点/README.md#Shuffle机制)
     - [x] [★★★MapReduce优化点](Day08Shuffle机制&MapReduce优化点/README.md#MapReduce优化点)
+- [Day09MapReduce优化案例](Day09MapReduce优化案例/README.md)
+    - [ ][分区优化]()
+    - [ ][排序优化]()
+    - [ ][合并优化]()
+    - [ ][数据压缩优化]()
+    - [ ][OutPutFormat自定义]()
+    - [ ][MapJoin自定义]()
+    - [ ][ReduceJoin自定义]()
