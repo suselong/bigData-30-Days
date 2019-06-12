@@ -79,7 +79,7 @@ FileOutputFormat.setOutputPath(job, new Path("/wc/out"));
 readField方法来重写产生不同的对象，Java序列化每次序列化都要重新创建对象，内存消耗大，Writable可以重用
 ### 手机流量统计案例
 + 需求：统计每隔手机用户的上行流量、下行流量、总流量总和，并存入到HDFS中
-+ 日志数据结构
++ 日志数据结构<br/>
 ![](img/日志数据.png)
 1. [自定义传输数据类](MapReduce/src/main/java/FlowCount/FlowBean.java)
 2. [自定义Mapper类](MapReduce/src/main/java/FlowCount/FlowCountMapper.java)
