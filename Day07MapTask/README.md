@@ -5,7 +5,7 @@
 3. 默认情况下split大小=blockSize，分派决定mapTask进程数量
 4. 切片是针对每一个文件单独切片
 ### MapTask工作机制
-![](img/MapTask工作机制.jpg)
+![](img/MapTask工作机制.png)
 1. MapTask_0 负责split_0(128M)，MapTask_1负责split_1(82M)
 2. MapTask_0 通过一个组件TextInputFormat读取split_0，这个组件封装一个LineRecordReader，里面有next方法，没调用一次方法就从
 split_0中读取一行，给MapTask行起始offset和行内容。

@@ -110,7 +110,7 @@ readField方法来重写产生不同的对象，Java序列化每次序列化都�
 2. [自定义Driver类](MapReduce/src/main/java/FlowCount/FlowCountDriver.java)
 
 ### MapReduce工作机制
-![](../Day07MapTask/img/MapTask工作机制.jpg)
+![](../Day07MapTask/img/MapTask工作机制.png)
 - Map Task
 > - 程序中会更具InputFormat将输入文件分割成splits，每个split会作为一个map task的输入，每个map task会有一个内存缓冲区，
 输入数据经过map阶段处理后的中间结果会写入内存缓冲区，并且决定数据写入哪个partitioner，当写入的数据到达内存缓冲区阀值
