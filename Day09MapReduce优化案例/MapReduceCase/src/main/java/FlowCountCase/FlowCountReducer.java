@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Reducer类，按照手机号码进行聚合
  */
-public class FlowCountReducer extends Reducer<Text, FlowBean, Text, FlowBean> {
+public class FlowCountReducer extends Reducer<Text, FlowSortBean, Text, FlowSortBean> {
   /**
    *
    * @param key 手机号码
@@ -18,14 +18,14 @@ public class FlowCountReducer extends Reducer<Text, FlowBean, Text, FlowBean> {
    * @throws InterruptedException
    */
   @Override
-  protected void reduce(Text key, Iterable<FlowBean> values, Context context) throws IOException, InterruptedException {
+  protected void reduce(Text key, Iterable<FlowSortBean> values, Context context) throws IOException, InterruptedException {
     long upFlow = 0;
     long dwFlow = 0;
-    for (FlowBean flow : values) {
+    for (FlowSortBean flow : values) {
       upFlow += flow.getUpFlow();
-      dwFlow += flow.getDfFlow();
+      dwFlow += flow.getDownFlow();
     }
-    FlowBean flowBean = new FlowBean(upFlow, dwFlow);
+    FlowSortBean flowBean = new FlowSortBean(upFlow, dwFlow);
     context.write(key, flowBean);
   }
 }

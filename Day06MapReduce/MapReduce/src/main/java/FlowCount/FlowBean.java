@@ -1,4 +1,4 @@
-package FlowCount;
+package FlowCountCase;
 
 import org.apache.hadoop.io.Writable;
 
