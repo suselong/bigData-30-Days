@@ -10,21 +10,21 @@
 ，输出的结果文件是以reduceTask决定，如果2个分区，虽然是两个reduceTask，但是还会进行合并，因此最终的输出结果数量是以设置
 为准。若进行内存缓存过程中，内存不足情况下，会溢写道磁盘，然后进行归并、排序，在按照相同的key进行分组
 - 流程图：<br/>
-![](img/Shuffle流程图.png)
+![](img/Shuffle流程.jpg)
 - 详解：
 1. Collect阶段：每个Map任务不断地以<key, value>对的形式把数据输出到在内存中构造的一个环形数据结构中。使用环形数据结构
 是为了更有效地使用内存空间，在内存中放置尽可能多的数据
-2. 环形缓冲区：这个数据结构其实就是个字节数组，叫Kvbuffer，这里面放置了<key, value>数据和索引数据，给放置索引数据的区
+    - 环形缓冲区：这个数据结构其实就是个字节数组，叫Kvbuffer，这里面放置了<key, value>数据和索引数据，给放置索引数据的区
 域起了一个Kvmeta的别名，在Kvbuffer的一块区域上穿了一个IntBuffer（字节序采用的是平台自身的字节序）的马甲。<key, value>
 数据区域和索引数据区域在Kvbuffer中是相邻不重叠的两个区域，用一个分界点来划分两者，分界点不是亘古不变的，而是每次Spill之
 后都会更新一次。初始的分界点是0，<key, value>数据的存储方向是向上增长，索引数据的存储方向是向下增长，默认100M（大小可设置）
 ，>=80%发生溢写， 索引数据包括value的起始位置、key的起始位置、partition值、value的长度
-3. Sort阶段：先把Kvbuffer中的数据按照partition值和key两个关键字升序排序，移动的只是索引数据，排序结果是Kvmeta中数据按照
+2. Sort阶段：先把Kvbuffer中的数据按照partition值和key两个关键字升序排序，移动的只是索引数据，排序结果是Kvmeta中数据按照
 partition为单位聚集在一起，同一partition内的按照key有序。
-4. Spill阶段：Spill线程为这次Spill过程创建一个磁盘文件：创建一个类似于“spill12.out”的文件。Spill线程根据排过序的
+3. Spill阶段：Spill线程为这次Spill过程创建一个磁盘文件：创建一个类似于“spill12.out”的文件。Spill线程根据排过序的
 Kvmeta挨个partition的把<key, value>数据吐到这个文件中，一个partition对应的数据吐完之后顺序地吐下个partition，直到把所有的
 partition遍历完。一个partition在文件中对应的数据也叫段(segment)。
-5. Copy阶段：
+4. Copy阶段：
     - Reduce任务拖取某个Map对应的数据，默认存内存中，Reduce要向每个Map去拖取数据，在内存中每个Map对应一块数据，当内存中
 存储的Map数据占用空间达到一定程度的时候，开始启动内存中merge，把内存中的数据merge输出到磁盘上一个文件中。 
     - 如果在内存中不能放得下这个Map的数据的话，直接把Map数据写到磁盘上，从HTTP流中读取数据然后写到磁盘，使用的缓存区
@@ -48,4 +48,4 @@ Reduce端的sort过程就是这个合并的过程。一般Reduce是一边copy一
 > > 1. MR中有大量不可分块的超大文件，在shuffle阶段会不断溢写
 > > 1. 多个溢写的小文件，需要多级Merge
 - 优化方案思维图
-![](img/MapReduce优化方案.png)
+![](img/MR优化思路.jpg)
