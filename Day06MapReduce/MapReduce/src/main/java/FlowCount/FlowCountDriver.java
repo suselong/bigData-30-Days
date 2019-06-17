@@ -1,4 +1,4 @@
-package FlowCountCase;
+package FlowCount;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * 驱动类，进行任务提交
@@ -29,8 +30,8 @@ public class FlowCountDriver {
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(FlowBean.class);
     // 设置输入和输出路径
-    FileInputFormat.setInputPaths(job, new Path("wc/flowIn"));
-    FileOutputFormat.setOutputPath(job, new Path("wc/flowOut"));
+    FileInputFormat.setInputPaths(job, new Path("Day06MapReduce\\MapReduce\\src\\main\\resources\\flowIn"));
+    FileOutputFormat.setOutputPath(job, new Path("Day06MapReduce\\MapReduce\\src\\main\\resources\\" + (new Date()).getTime() + "_flowOut"));
     // 提交任务
     boolean result = job.waitForCompletion(true);
     System.out.println(result ? "数据处理成功" : "数据处理失败");

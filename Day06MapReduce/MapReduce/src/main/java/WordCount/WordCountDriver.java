@@ -35,8 +35,8 @@ public class WordCountDriver {
     job.setOutputValueClass(IntWritable.class);
 
     //7. 设置数据输入路径和处理后结果存放路径
-    FileInputFormat.setInputPaths(job, "Day06MapReduce\\WordCountMR\\src\\main\\resources\\inpath");
-    FileOutputFormat.setOutputPath(job, new Path("Day06MapReduce\\WordCountMR\\src\\main\\resources\\outpath"));
+    FileInputFormat.setInputPaths(job, "Day06MapReduce\\MapReduce\\src\\main\\resources\\inpath");
+    FileOutputFormat.setOutputPath(job, new Path("Day06MapReduce\\MapReduce\\src\\main\\resources\\outpath"));
 
     //8. 提交任务
     job.waitForCompletion(true);

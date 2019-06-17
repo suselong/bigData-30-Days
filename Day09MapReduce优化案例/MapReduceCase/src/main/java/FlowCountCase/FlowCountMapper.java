@@ -7,7 +7,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * 进行字符串切割，输出的数据类型是自定义的FlowBean
+ * 进行字符串切割，输出的数据类型是自定义的FlowSortBean
  *
  */
 public class FlowCountMapper extends Mapper<LongWritable, Text, Text, FlowSortBean> {

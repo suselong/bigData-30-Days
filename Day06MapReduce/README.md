@@ -108,6 +108,8 @@ readField方法来重写产生不同的对象，Java序列化每次序列化都�
 2. [自定义Mapper类](MapReduce/src/main/java/FlowCount/FlowCountMapper.java)
 2. [自定义Reducer类](MapReduce/src/main/java/FlowCount/FlowCountReducer.java)
 2. [自定义Driver类](MapReduce/src/main/java/FlowCount/FlowCountDriver.java)
++ 测试结果      
+![](img/flowCount测试结果.png)
 
 ### MapReduce工作机制
 ![](../Day07MapTask/img/MapTask工作机制.png)

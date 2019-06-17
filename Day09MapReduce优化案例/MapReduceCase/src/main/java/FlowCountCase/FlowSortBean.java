@@ -30,9 +30,9 @@ public class FlowSortBean implements WritableComparable<FlowSortBean> {
   /**
    *  排序，首先需要明确根据什么来排序，例如流量总和sumFlow
     */
-  public int compareTo(FlowSortBean flowSortBean) {
+  public int compareTo(FlowSortBean o) {
     // 数据传输是一条一条传的，当前数据比上一条大，则往上排,负数为倒序，整数为正序
-    return this.sumFlow > flowSortBean.getSumFlow() ? -1 : 1;
+    return this.sumFlow > o.getSumFlow() ? -1 : 1;
   }
   // 序列化
   public void write(DataOutput out) throws IOException {

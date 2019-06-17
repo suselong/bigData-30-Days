@@ -12,7 +12,7 @@ public class FlowCountReducer extends Reducer<Text, FlowSortBean, Text, FlowSort
   /**
    *
    * @param key 手机号码
-   * @param values 相同手机号码的FlowBean迭代器
+   * @param values 相同手机号码的FlowSortBean迭代器
    * @param context 输出接口
    * @throws IOException
    * @throws InterruptedException
@@ -25,7 +25,7 @@ public class FlowCountReducer extends Reducer<Text, FlowSortBean, Text, FlowSort
       upFlow += flow.getUpFlow();
       dwFlow += flow.getDownFlow();
     }
-    FlowSortBean flowBean = new FlowSortBean(upFlow, dwFlow);
-    context.write(key, flowBean);
+    FlowSortBean flowSortBean = new FlowSortBean(upFlow, dwFlow);
+    context.write(key, flowSortBean);
   }
 }
