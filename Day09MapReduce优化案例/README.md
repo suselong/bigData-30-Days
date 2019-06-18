@@ -65,6 +65,78 @@ Mapper阶段：分区1 (3+5+7)/3=5
 job.setCombinerClass(FlowCountReducer.class);
 ```
 
-### 案例2：辅助排序单词统计案例
-需求：
-
+### 案例2：订单数据分析
+需求：求出每个订单中最贵的商品     
+数据格式：       
+![](img/orderData.png)      
+需求分析：
+1. 需要对订单id进行全局正序排序，成交额倒序排序
+2. 不同的订单id存放到不同的文件，需要更具订单id进行分区
+3. 辅助排序中相同的id区第一个放到对应的文件
+全局排序：
++ 接口：WritableCompartable
++ 实现：compareTo方法
++ 说明：1 -- 正序，-1 -- 倒序，0 -- 不进行排序，且只取一个      
+辅助排序：
++ 父类：WritableComparator
++ 重写：compare方法
++ 注意：辅助排序必须加如下构造，是根据什么进行二次排序，super里面加对应的类   
+```java
+public class OrderGroupingComparator extends WritableComparator {
+     // 辅助排序该构造必须加，规范， 是根据什么来进行二次排序，super里面加对应的类
+     protected OrderGroupingComparator() {
+           super(OrderBean.class, true);
+     }
+```
+全局排序核心代码：   
+```java
+    // 排序，ID正序，价格倒序
+     @Override
+     public int compareTo(OrderBean o) {
+           int rs;
+           // ID排序,当前id大于下一个id，往下排为1往上排为-1
+           if (order_id > o.order_id) {
+                // id大的往下排
+                rs = 1;
+           }else if(order_id < o.order_id) {
+                rs = -1;
+           }else {
+                // id相等的价格高的往上排
+               rs = order_price > o.order_price ? -1 : 1;
+           }
+           return rs;
+```
+辅助排序代码：     
+```java
+package com.itstar.order;
+import org.apache.hadoop.io.WritableComparable;
+import org.apache.hadoop.io.WritableComparator;
+/**
+ *
+ * @author CDMloong
+ * 这个是reducer的分组排序
+ */
+public class OrderGroupingComparator extends WritableComparator {
+     // 辅助排序该构造必须加，规范， 是根据什么来进行二次排序，super里面加对应的类
+     protected OrderGroupingComparator() {
+           super(OrderBean.class, true);
+     }
+     // 重写比较
+     public int compare(WritableComparable a, WritableComparable b) {
+           OrderBean a_bean = (OrderBean) a;
+           OrderBean b_bean = (OrderBean) b;          
+           int rs;
+           // order_id不同不是同一个对象
+           if (a_bean.getOrder_id() > b_bean.getOrder_id()) {
+                rs = 1;
+           }else if(a_bean.getOrder_id() < b_bean.getOrder_id()) {
+                rs = -1;
+           }else {
+                // id相同，不进行操作，直接返回0，只拿到了第一行的数据
+                rs = 0;
+           }
+           return rs;
+     }
+}
+```
+[案例完整代码](MapReduceCase/src/main/java/OrderMR)

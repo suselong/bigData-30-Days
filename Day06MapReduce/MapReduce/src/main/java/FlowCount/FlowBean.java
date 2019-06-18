@@ -52,7 +52,7 @@ public class FlowBean implements Writable {
 
   @Override
   public String toString() {
-    return "upFlow:" + upFlow + ",dfFlow:" + dfFlow + ",flowSum:" + flowSum;
+    return upFlow + "\t" + dfFlow + "\t" + flowSum;
   }
 
   /**

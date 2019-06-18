@@ -4,7 +4,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.input.CombineTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
@@ -14,16 +13,16 @@ import java.util.Date;
 /**
  * 驱动类，进行任务提交
  */
-public class FlowCountDriver {
+public class FlowCountSortDriver {
   public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
     // 初始化工作
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf);
     // 设置jar包
-    job.setJarByClass(FlowCountDriver.class);
+    job.setJarByClass(FlowCountSortDriver.class);
     // 设置Mapper和Reducer类
-    job.setMapperClass(FlowCountMapper.class);
-    job.setReducerClass(FlowCountReducer.class);
+    job.setMapperClass(FlowCountSortMapper.class);
+    job.setReducerClass(FlowCountSortReducer.class);
     // 设置Mapper输出key和value
     job.setMapOutputKeyClass(Text.class);
     job.setMapOutputValueClass(FlowSortBean.class);
