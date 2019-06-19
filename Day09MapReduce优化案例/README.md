@@ -140,3 +140,38 @@ public class OrderGroupingComparator extends WritableComparator {
 }
 ```
 [案例完整代码](MapReduceCase/src/main/java/OrderMR)
+
+### 案例3：小文件合并(通过自定义InputFormat实现)
+背景：
++ 多个小文件情况下，若直接使用默认的**TextInputFormat**会消耗IO资源
+需求：
++ 采用在输入MapTask前进行小文件合并
++ 小文件合并为一个文件后需要知道原始文件的路径和对应的内容，存储格式：文件路径+文件内容，例如：c:/a.text aaaaa
+思路：
++ 通过自定义InputFormat实现，需要继承FileInputFormat，按照源码的格式进行自定义
+实现：
+1. 自定义FuncFileInputFormat，继承FileInputFormat。[代码](MapReduceCase/src/main/java/FuncInputFormat/FuncFileInputFormat.java)
+2. 【核心点】自定义读取方式FuncRecordReader，继承RecordReader。[代码](MapReduceCase/src/main/java/FuncInputFormat/FuncRecordReader.java)      
+3. 常规MapReduce编程
+4. 设置自定义的读取方式      
+```java
+//设置自定义读取方式
+job.setInputFormatClass(FuncFileInputFormat.class);
+```
+[完整案例代码](MapReduceCase/src/main/java/FuncInputFormat)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
