@@ -44,4 +44,4 @@
     - [x] [案例3：小文件合并(自定义InputFormat实现)](Day09MapReduceCase/README.md#案例3小文件合并自定义inputformat实现)   
     - [x] [案例4：文件过滤(自定义OutPutFormat实现)](Day09MapReduceCase/README.md#案例4文件过滤自定义outputformat实现)
     - [x] [案例5：订单表&商品表合并](Day09MapReduceCase/README.md#案例5订单表商品表合并)
-    - [ ] [案例6：数据压缩优化](Day09MapReduceCase/README.md)
+    - [x] [数据压缩](Day09MapReduceCase/README.md#数据压缩)

@@ -221,11 +221,101 @@ www.jd.com
     [代码](MapReduceCase/src/main/java/OrderReducerJoin/OrderJoinReducer.java)
 + 测试结果：     
 ![](img/reducerJoinResult.png)
+### 数据压缩
++ 背景：MR的操作过程中实际是数据的流入和流出的过程，在进行计算肯定会进行大量的数据传输，如果需要提升性能，
+我们可以通过压缩来，减少数据来提升性能。
++ 作用：
+    + 能够有效的减少底层存储(HDFS)读写字节数；
+    + 提高网络宽带和磁盘空间的效率，减少网络IO；
+    + 有效的节省资源；
+    + 压缩是mr程序的优化策略，是通过减少mapper或reducer的传输进行数据的压缩，以减少磁盘IO
++ ☆☆☆☆基本原则：
+    + **运算密集型的任务经历少用压缩；**
+    + IO密集型的任务，多用压缩；
++ MR支持的压缩编码     
 
+|压缩格式|Hadoop是否自带|文件拓展名|是否可以切分|编码/解码器|原始文件(GB)|压缩后(GB)|压缩速率(MB/S)|解压速率(MB/S)|优缺点|
+|---|---|---|---|---|---|---|---|---|---|
+|Default|是|.default|否|org.apche.hadoop.io.compress.DefaultCodeC|-|-|-|-|-|
+|Gzip|是|.gz|否|org.apche.hadoop.io.compress.GzipCodeC|8.3|1.8|17.5|58|压缩率高，压缩速率较快|
+|bzip2|是|.bz2|是|org.apche.hadoop.io.compress.BZip2CodeC|8.3|1.1|2.4|9.5|压缩率高、压缩速率慢|
+|LZO|否|.lzo|是|com.hadoop.compression.lzo.lzoCodeC|8.3|2.9|49.3|74.6|压缩率低、压缩速率快|
+|Snappy|否|.snappy|否|org.apche.hadoop.io.compress.SnappyCodeC|-|-|-|-|-|
 
++ Map端设置方法
+    1. 在配置中(conf)中开启数据压缩
+    2. 在配置中(conf)中设置压缩方式
+    ```java
+    // 1.获取job信息
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf);
+    // 开启map端的数据压缩
+    conf.setBoolean("mapreduce.map.output.compress", true);
+    // 设置压缩方式,指定压缩，压缩方式是默认
+    conf.setClass("mapreduce.map.output.compress.codec", DefaultCodec.class, CompressionCodec.class);
+    // 压缩方式为Gzip
+    conf.setClass("mapreduce.map.output.compress.codec", GzipCodec.class, CompressionCodec.class);
+    // 压缩方式为BZip2
+    conf.setClass("mapreduce.map.output.compress.codec", BZip2Codec.class, CompressionCodec.class);
+    // 2.获取jar包
+    job.setJarByClass(OrderDriver.class);
+    ```
++ Reduce端设置方法
+    1. 输出格式(FileOutputFormat)中开启数据压缩
+    2. 输出格式(FileOutputFormat)中设置压缩方法
+    ```java
+    // 开启reduce端的输出压缩
+    FileOutputFormat.setCompressOutput(job, true);
+    // 设置默认压缩方法
+    FileOutputFormat.setOutputCompressorClass(job, DefaultCodec.class);
+    // 设置BZip2压缩方式
+    FileOutputFormat.setOutputCompressorClass(job, BZip2Codec.class);
+    // 设置Gzip压缩方法
+    FileOutputFormat.setOutputCompressorClass(job, GzipCodec.class);
+    // 9.设置输入输出格式
+    FileInputFormat.setInputPaths(job, new Path("E:\\order\\in"));
+    FileOutputFormat.setOutputPath(job, new Path("E:\\order\\out"));
+    ```
++ 压缩测试代码示例      
+```java
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.IOUtils;
+import org.apache.hadoop.io.compress.CompressionCodec;
+import org.apache.hadoop.io.compress.CompressionOutputStream;
+import org.apache.hadoop.util.ReflectionUtils;
 
-
-
+/**
+* @author :FinalLong
+* @date : 2018年10月31日 下午10:17:54
+* @version ：1.0 类说明
+*/
+public class TestCompress {
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
+        Compress("e:\\123","org.apache.hadoop.io.compress.DefaultCodec");
+    }
+    // 测试压缩方法
+    private static void Compress(String filename, String method) throws ClassNotFoundException, IOException {
+        // 1.获取输入流
+        FileInputStream fis = new FileInputStream(new File(filename));
+        // 2.反射机制，获取class
+        Class className = Class.forName(method);
+        CompressionCodec codec = (CompressionCodec) ReflectionUtils.newInstance(className, new Configuration());
+        // 输出流
+        FileOutputStream fos = new FileOutputStream(new File(filename + codec.getDefaultExtension()));
+        // 创建压缩方式
+        CompressionOutputStream cos = codec.createOutputStream(fos);
+        IOUtils.copyBytes(fis, cos, 1024 * 1024 * 2, false);
+        // 关闭资源
+        fis.close();
+        cos.close();
+        fos.close();
+    }
+}
+```
 
 
 
