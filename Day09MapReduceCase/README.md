@@ -141,7 +141,7 @@ public class OrderGroupingComparator extends WritableComparator {
 ```
 [案例完整代码](MapReduceCase/src/main/java/OrderMR)
 
-### 案例3：小文件合并(通过自定义InputFormat实现)
+### 案例3：小文件合并(自定义InputFormat实现)
 背景：
 + 多个小文件情况下，若直接使用默认的**TextInputFormat**会消耗IO资源
 需求：
@@ -159,8 +159,26 @@ public class OrderGroupingComparator extends WritableComparator {
 job.setInputFormatClass(FuncFileInputFormat.class);
 ```
 [完整案例代码](MapReduceCase/src/main/java/FuncInputFormat)
-
-
+### 案例4：文件过滤(自定义OutPutFormat实现)
++ 原始日志数据示例：       
+```
+www.baidu.com   
+www.souhu.com   
+hadoop.apache.org   
+hbase.apache.org    
+www.jd.com
+```      
++ 需求：
+    + 过滤用户访问网址的日志内容，过滤指定内容的网址放一个文件
+    + 把包含apache的网址放到文件apache.txt文件中
+    + 其他非apache的网址放到other.txt文件中 
++ 思路：
+    1. 自定义FileOutputFormat，并重写齐总的getRecordWriter方法[代码](MapReduceCase/src/main/java/logFilter/FuncOutputFormat.java)
+    2. 自定义RecordWriter类，重写RecordWriter中的write和close；[代码](MapReduceCase/src/main/java/logFilter/FuncRecorderWriter.java)
+    4. 在重写write方法时候回到需求我们需要写到两个自定义结果文件中，因此需要自定义输出文件，则需要写该类的构造方法
+    5. 需要自定义两个输出文件，则需要HDFS框架中的FileSystem系统，这需要获取到，FileSystem需要配置文件ConFiguration，
+    配置文件是从job中获取，则构造函数里面需要传入job
++ [完整案例代码](MapReduceCase/src/main/java/logFilter)
 
 
 

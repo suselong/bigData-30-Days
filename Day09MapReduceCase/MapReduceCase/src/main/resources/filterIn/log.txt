@@ -1,0 +1,5 @@
+www.baidu.com
+www.souhu.com
+hadoop.apache.org
+hbase.apache.org
+www.jd.com
