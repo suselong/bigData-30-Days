@@ -43,6 +43,5 @@
     - [x] [案例2：订单数据分析](Day09MapReduceCase/README.md#案例2订单数据分析)
     - [x] [案例3：小文件合并(自定义InputFormat实现)](Day09MapReduceCase/README.md#案例3小文件合并(自定义InputFormat实现))   
     - [x] [案例4：文件过滤(自定义OutPutFormat实现)](Day09MapReduceCase/README.md#案例4文件过滤(自定义OutPutFormat实现))
-    - [ ] [案例5：订单Join(自定义MapJoin实现)](Day09MapReduceCase/README.md)
-    - [ ] [案例6：订单Join(自定义ReduceJoin实现)](Day09MapReduceCase/README.md)
-    - [ ] [案例7：数据压缩优化](Day09MapReduceCase/README.md)
+    - [x] [案例5：订单表&商品表合并](Day09MapReduceCase/README.md#案例5订单表&商品表合并)
+    - [ ] [案例6：数据压缩优化](Day09MapReduceCase/README.md)

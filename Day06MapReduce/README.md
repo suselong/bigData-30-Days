@@ -72,7 +72,7 @@ ResourceManager申请资源时候，ResourceManager向ApplicationMaster返回的
 > 1. 应用程序运行完成后，ApplicationMaster向ResourceManager注销并关闭自己
 ### Hadoop数据类型
 |Java数据类型|Hadoop数据类型|
-| ----|----|
+|----|----|
 |int|IntWritable|
 |float|FloatWritable|
 |Long|LongWritable|

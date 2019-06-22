@@ -180,7 +180,47 @@ www.jd.com
     配置文件是从job中获取，则构造函数里面需要传入job
 + [完整案例代码](MapReduceCase/src/main/java/logFilter)
 
-
+### 案例5：订单表&商品表合并
++ 原始数据示例：
+    + 订单表   
+    
+        |订单号|商品ID|订单ID|
+        |----|----|----|
+        |201801|01|1|
+        |201802|02|2|
+        |201803|03|3|
+        |201804|01|4|
+        |201805|03|5|
+        |201806|02|6|
+        |201807|02|7|
+    + 商品表   
+    
+        |商品ID|商品名称|
+        |----|----|
+        |01|苹果|
+        |02|小米|
+        |03|华为|
++ 需求：把订单表中的加上商品名称或者商品编号换成商品名称
++ 方案1：MapJoin  [可直接运行代码](MapReduceCase/src/main/java/OrderMapJoin)
+    + 商品表较小，可以在Map初始化的时候加入到缓存中
+    + Mapper阶段是读入数据，在Map端输出前进行商品名称替换或追加
+    + 重写Mapper中的steup方法把商品表通过缓冲流BufferedReader来读入到hashMap中
+    + 重写map方法，通过获取到商品的id，然后通过id获取到商品名称，并替换或追加到后面
++ 注意事项：
+    + 因为没用到Reducer，因此不需要设置Reducer和对应的输出可以和value
+    + 并且同时需要设置ReduceTask的任务数为0，因为默认是1，且本方案不用到
++ 测试结果：     
+![](img/mapJoinResult.png)
++ 方案2：ReducerJoin  [可直接运行代码](MapReduceCase/src/main/java/OrderReducerJoin)
+    + 封装一个商品的对象，对象中包括order_id、pid(产品ID)、amount(商品数量)、pName(商品名称)、flag(区分是什么表格)
+    [代码](MapReduceCase/src/main/java/OrderReducerJoin/OrderJoinBean.java)
+    + Mapper阶段区分是什么表格，设置以商品ID为key的值，其他字段有的对应设置，无的填写空进行输出到reducer
+    [代码](MapReduceCase/src/main/java/OrderReducerJoin/OrderJoinMapper.java)
+    + Reducer阶段通过标记区分表格，如果是订单表格，把对应的值拷贝到临时变量，并添加到一个列表中，如果不是则放到商品变量中,
+    最后循环列表，把商品的变量中的名称替换成列表元素中的商品id，进行输出,
+    [代码](MapReduceCase/src/main/java/OrderReducerJoin/OrderJoinReducer.java)
++ 测试结果：     
+![](img/reducerJoinResult.png)
 
 
 
