@@ -235,12 +235,12 @@ www.jd.com
 + MR支持的压缩编码     
 
 |压缩格式|Hadoop是否自带|文件拓展名|是否可以切分|编码/解码器|原始文件(GB)|压缩后(GB)|压缩速率(MB/S)|
-|---|---|---|---|---|---|---|---|---|---|
-|Default|是|.default|否|org.apche.hadoop.io.compress.DefaultCodeC|-|-|-|-|-|
+|---|---|---|---|---|---|---|---|
+|Default|是|.default|否|org.apche.hadoop.io.compress.DefaultCodeC|-|-|-|-|
 |Gzip|是|.gz|否|org.apche.hadoop.io.compress.GzipCodeC|8.3|1.8|17.5|58|
 |bzip2|是|.bz2|是|org.apche.hadoop.io.compress.BZip2CodeC|8.3|1.1|2.4|9.5|
 |LZO|否|.lzo|是|com.hadoop.compression.lzo.lzoCodeC|8.3|2.9|49.3|74.6|
-|Snappy|否|.snappy|否|org.apche.hadoop.io.compress.SnappyCodeC|-|-|-|-|-|
+|Snappy|否|.snappy|否|org.apche.hadoop.io.compress.SnappyCodeC|-|-|-|-|
 
 + Map端设置方法
     1. 在配置中(conf)中开启数据压缩
