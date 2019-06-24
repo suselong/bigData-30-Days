@@ -156,3 +156,15 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$ZOOKEEPER_H
     System.out.println(exists == null ? "not exists":"exist");
   }
 ```
+### 案例
++ 需求：某分布式系统中，主节点有多台，节点可以进行动态上下线，当有任意一台机器发生了动态的上下线，任意一台客户端都可以感知。
++ 思路：
+    + 需要创建客户端与服务端
+    + 启动Client端、监听
+    + 启动Server端、注册
+    + 当Server端发生上下线，Client端口能感知到
++ [完整代码](ZookeeperDemo/src/main/java/UpDownLineCase)
++ zkClient测试截图：     
+![](img/clientTest.png)
++ zkServer测试截图：     
+![](img/serverTest.png)
