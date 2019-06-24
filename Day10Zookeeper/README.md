@@ -99,4 +99,60 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$ZOOKEEPER_H
 ![](img/rmrpath.png)
 10. 查看节点的状态信息：stat path [watch]
 ### 常用API
+[完整代码](ZookeeperDemo/src/main/java/ZookeeperCli/zkCliApi.java)      
+```java
+ @Test
+  public void createZnode() throws KeeperException, InterruptedException {
+    String path = zkCli.create("/along005", "chihuoguo".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+    String path01 = zkCli.create("/along006", "chihuoguole".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
+    System.out.println(path);
+    System.out.println(path01);
+  }
+
+  /**
+   * 获取子节点
+   * @throws KeeperException
+   * @throws InterruptedException
+   */
+  @Test
+  public void getChild() throws KeeperException, InterruptedException {
+    List<String> children = zkCli.getChildren("/", true);
+
+    for(String chil:children) {
+      System.out.println(chil);
+    }
+    Thread.sleep(Long.MAX_VALUE);
+  }
+
+  /**
+   * 删除节点
+   * @throws KeeperException
+   * @throws InterruptedException
+   */
+  @Test
+  public void rmChildDate() throws KeeperException, InterruptedException {
+    zkCli.delete("/along006", -1);
+  }
+  /**
+   * 修改数据
+   * @throws KeeperException
+   * @throws InterruptedException
+   */
+  @Test
+  public void setData() throws KeeperException, InterruptedException {
+    zkCli.setData("/along005", "quchegnduchihuoguo".getBytes(), -1);
+    byte[] data = zkCli.getData("/along005", true, null);
+    System.out.println(Arrays.toString(data));
+  }
+  /**
+   * 判断节点是否存在
+   * @throws KeeperException
+   * @throws InterruptedException
+   */
+  @Test
+  public void testExist() throws KeeperException, InterruptedException {
+    Stat exists = zkCli.exists("/along005", false);
+    System.out.println(exists == null ? "not exists":"exist");
+  }
+```
