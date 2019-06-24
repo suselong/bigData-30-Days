@@ -5,7 +5,7 @@
 ![](img/Linux.png)
 - [x] [Day02-09 Hadoop](Hadoop笔记.md)  
 ![](img/hadoop-logo.jpg)
-- [ ] [Day10 Zookeeper]()   
+- [x] [Day10 Zookeeper](Day10Zookeeper/README.md)   
 ![](img/zookeeper_small.gif)
 - [ ] [Day11-13 Hive]()    
 ![](img/hive_logo_medium.jpg)   
