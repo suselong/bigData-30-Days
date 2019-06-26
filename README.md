@@ -7,7 +7,7 @@
 ![](img/hadoop-logo.jpg)
 - [x] [Day10 Zookeeper](Day10Zookeeper/README.md)   
 ![](img/zookeeper_small.gif)
-- [ ] [Day11-13 Hive]()    
+- [x] [Day11-13 Hive](Day11Hive/README.md)    
 ![](img/hive_logo_medium.jpg)   
 - [ ] [Day14 Flume]()   
 ![](img/flume-logo.png)
