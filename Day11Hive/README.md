@@ -9,6 +9,16 @@
     HADOOP_HOME=/root/hd/hadoop-2.8.5
     3. 配置hive配置文件路径：    
     export HIVE_CONF_DIR=/root/hd/hive/conf
+5. 修改配置文件hive-site.xml：vi /root/hd/hive/conf/hive-site.xml      
+增加如下配置：     
+\<property>      
+    \<name>hive.cli.print.header\</name>      
+    \<value>true\</value>     
+    \</property>     
+\<property>      
+    \<name>hive.cli.print.current.db\</name>      
+    \<value>true\</value>     
+\</property> 
 5. 启动hdfs：start-dfs.sh
 6. 启动yarn：start-yarn.sh     
 ![](img/yarnstart.png)
@@ -159,4 +169,197 @@ create table *table_name(column_name column_type)* partitioned by (day string) r
 ![](img/hiveshell.png)
 + 数据导出(hadoop方式)：dfs -get *hdfs_file_path* *local_file_path*
 + 清空表格：truncate table *table_name*;
+### 算术运算符
+|运算符|描述|
+|---|---|
+|+|相加|
+|-|相减|
+|*|相乘|
+|/|相除|
+|%|取余|
+|1|按位取或|
+|^|按位异或|
+|~|按位取反|
+### 函数
+![](img/sqlfunction.png)
+### Where语句使用
+1. 工资大于1700的员工信息：select * from table_name where column_name >1700;
+2. 工资小于1800的员工信息：select * from table_name where column_name <1800;
+3. 查询工资在1500到1800之间的信息：select * from table_name where column_name between 1500 and 1800;
+4. 查询有奖金的员工信息：select * from table_name where column_name is not null;
+5. 查询无奖金的员工信息：select * from table_name where column_name not null；
+6. 查询工资是1700或1900的员工信息：select * from table_name where column_name in(1700,1900);
+### LIKE使用
++ 使用场景：
+1. 选择类似的值
+2. 选择条件可以包含字母和数字
++ 案例
+1. 查询员工薪水第二位为6的员工信息：SELECT * FROM table_name WHERE LIKE  '_6%';
+    1.  注：_ 表示一个字符，% 表示0-n个字符
+2. 查询员工薪水包含7的员工信息：SELECT * FROM table_name WHERE LIKE '%7%';
+### GROUP BY使用
+1. 计算empt表中每个部门的平均工资    
+SELECT AVG(empt.sal) AS avg_sal,empt.deptno FROM empt GROUP BY empt.deptno；
+1. 计算empt每个部门中最高的薪水     
+SELECT MAX(empt.sal) AS max_sal, empt.deptno FROM empt GROUP BY empt.deptno;
+1. 计算部门的平均薪水大于1700的部门       
+SELECT AVG(empt.sal) AS avg_sal,empt.deptno FROM empt GROUP BY empt.deptno HAVING avg_sal>1700;     
+**注意：如果想在分组GROUP BY后面加条件需要用 HAVING，HAVING只用于GROUP BY分组统计语句中，WHERE 后面不能写GROUP BY函数**
+### Join操作
++ 已有数据表
+    + dept表(部门表)     
+![](img/dept.png)
+    + empt表(员工表)     
+![](img/empt表.png)
+    + local表(地址表)        
+![](img/local.png)
++ 等值Join
+    + 需求：根据员工表和部门表中的部门编号相等，查询员工编号、员工名、部门名称
+    + 实现：SELECT empt.empno,empt.ename,dept.dept FROM empt JOIN dept ON empt.deptno=dept.deptno;     
+    ![](img/join1.png)      
+    **注：使用表别名可以提升查询效率，且避免输错误      
+    Hive只支持等值连接，不支持非等值连接(ON 后面只能用=)**
++ 左外连接LEFT JOIN
+    + 当左边的表比右边多的时候使用，当右边没有情况，会用null替代
+    + SELECT d.deptno,e.empno,e.ename,d.dept FROM dept d LEFT JOIN empt e ON e.deptno=d.deptno;     
+    ![](img/leftjoin.png)
++ 右外连接RIGHT JOIN
+    + 当右边的表比左边多的时候使用，当左边没有情况，会用null替代
+    + SELECT d.deptno,e.empno,e.ename,d.dept FROM  empt e RIGHT JOIN dept d ON e.deptno=d.deptno;(查询结果和左连接一样)
++ 多表连接查询
+    + 需求：查询员工名字、部门名称、地址
+    + 实现：SELECT e.ename,d.dept,l.loc_name FROM empt e JOIN dept d ON e.deptno=d.deptno JOIN  location l ON d.loc=l.loc_no;      
+    ![](img/numjoin.png)
+### 笛卡尔乘积
++ 简介： 笛卡尔乘积是指在数学中，两个集合X和Y的笛卡尓积（Cartesian product），又称直积，表示为X × Y，
+第一个对象是X的成员而第二个对象是Y的所有可能有序对的其中一个成员
++ 错误的写法，避免：select ename,dept from empt,dept;
++ 规避笛卡尔积方法
+    1. hive默认模式是非严格模式，如下        
+    ![](img/set.png)
+    2. 设置为严格模式：set hive.mapred.mode=strict; 该设置只是对当前会话有效，一直生效需要修改配置文件
+    3. 此时执行会出现笛卡尔积的操作会报错，如下     
+    ![](img/dekaer.png)
+    4. 永久生效修改配置文件方式：vi /root/hd/hive/conf/hive-site.xml，增加如下配置      
+    ![](img/dikaer2.png)
+### 排序ORDER BY
+1. 全局排序ORDER BY 
++ 查询员工信息按照升序排序
+    + 默认：SELECT * FROM empt ORDER BY sae ASC; 
+    + 降序：SELECT * FROM empt ORDER BY sae DESC;
++ 查询员工号与员工薪水按照员工二倍工资进行排序        
+SELECT empt.empno, empt.sae*2 twosal FROM empt ORDER BY twosal;
+1. 分区排序SORT BY
++ 分区表按照员工编号降序       
+SELECT * FROM empt DISTRIBUTE BY deptno SORT BY empno DESC;
+### 分桶表
++ 用途：主要运用到抽样，数据进行预判
++ 分区&粪桶区别
+    + 分区表分的是数据的存储路径
+    + 分桶表分的是文件
++ 分桶表创建     
+create table emp_buck(id int,name string)   
+clustered by(id) --- 通过什么字段分桶   
+into 4 buckets   --- 分为几通   
+row format delimited fields terminated by '\t';     
++ 清空表格：truncate table table_name;
++ 设置属性，开启分桶操作：
+1. 查询mapreduce的job配置：set mapreduce.job.reduces;  -1表示未设置reduce数量        
+![](img/setmap.png)
+2. 查询属性：set hive.enforce.bucketing;     
+![](img/sethive.png)
+3. 设置属性：set hive.enforce.bucketing=true;        
+![](img/sethive2.png)
++ 导入数据(子查询方式)       
+insert into table emp_buck select * from emp_b;     
+![](img/zichaxun.png)
+### 自定义函数
++ 三种自定义函数
+1. UDF:一进一出(User-Defined-Function)
+2. UDAF:多进一出(count、max、min)
+3. UDTF:一进多出
++ 自定义函数步骤：
+1. IDEA编码，示例：
+```java
+package com.along.hive;
+import org.apache.hadoop.hive.ql.exec.UDF;
+/**
+* @author :FinalLong
+* @version ：1.0
+* 类说明
+*/
+public class Lower extends UDF {
+     // 需求是大写转小写
+     public String evaluate(final String s) {
+           // 判断是否有字母,如果没有则直接
+           if(s==null) {
+                return null;
+           }
+           return s.toString().toLowerCase();
+     }
+}
+```
+2. 打包为jar包。[推荐：使用Maven插件打包](https://blog.csdn.net/daiyutage/article/details/53739452)
+3. 上传到HIVE环境中
+4. 启动HIVE并加载到环境中：add jar /root/lower.jar;       
+![](img/jaradd.png)
+5. 根据jar关联方法:create temporary function my_lower as "com.along.hive.Lower";     
+![](img/mylower.png)
+6. 使用自定义方法: select ename,my_lower(ename) lowername from empt;       
+![](img/mylower2.png)
+### Hive优化
++ 开启压缩优化
+1. 开启Map阶段输出压缩
+    1. 查看hive压缩功能状态：set hive.exec.compress.intermediate;
+    2. 开启hive压缩功能：set hive.exec.compress.intermediate=true;
+    3. 开启map端的压缩功能：set mapreduce.map.output.compress=true;
+    4. 设置map端的压缩方式：set mapreduce.map.output.compress.codec=org.apache.hadoop.io.compress.SnappyCodec;
+2. 开启Reduce阶段的输出压缩
+    1. 开启hive输出的压缩功能：set hive.exec.compress.output=true;
+    2. 开启Reduce端的压缩功能：set mapreduce.output.fileoutputformat.compress=true;
+    3. 设置Reduce端的压缩方式：set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.SnappyCodec;
+    4. 设置Reduc输出压缩的类型：set mapreduce.output.fileoutputformat.compress.type=BLOCK;
+    5. 测试：insert overwrite local directory '/root/compross/rsout' select * from empt sort by empno desc;    
+    ![](img/yasuotest.png)
+
++ 存储优化
+1. Hive存储格式：TextFile(default)/SequenceFile/orc/Parquet
+    1. orc/Parquet：按照列存储
+    1. 行存储：查询速度快，因为是只需要找到第一列，其他的按照顺序的，使用在列较多情况
+    1. 列存储：如果查询的字段较少，效率会较高，使用列较少情况
+    1. orc特点：
+        1. Index Data，是一个轻量级的索引，默认每隔1万行做一次索引；
+        1. row Data 存储的为具体的数据；
+        1. stripe Footer存储的流的类型，例如长度
+        1. Parquet：解决版本依赖的问题
+        1. 压缩比例：orc > parquet > textFile
+        1. 查询效率：orc > textFile
+1. 修改Hive存储格式
+    2. 创建表，需要指定存储格式     
+    create table itstar_log(time bigint,host string) row format delimited fields terminated by '\t' stored as orc;
+    2. 导入数据到普通表，因为指定了存储格式，不能直接导入        
+    create table itstar_temp(time bigint,host string) row format delimited fields terminated by '\t';       
+    load data local inpath 'root/itstar.log' into table itstar_temp;
+    2. 迁移到指定了格式的表中
+    insert into table itstar_log select * from itstar_temp;
+    2. HDFS观察大小
++ GROUP BY优化
+    + 背景：mr程序，map程序把相同key的数据分发给一个reduce，若一个key的数量较大，会发生数据倾斜；
+    + 解决方案：在Map端进行聚合(combiner)，**在Hive中也有类似功能**
+        1. 合并：set hive.map.aggr;   默认true   
+        ![](img/hivemap.png)
+        2. 在有可能发生数据倾斜的程序中，可以设置负载均衡      
+        set hive.groupby.skewindata=true;       
+        该属性可以均衡reduce，会把map的输出结果随机的分配到reduce中
+### 其他
+1. 合理避免数据倾斜
+    1.1 合理设置Map数量，并不是越多越好，过多业务处理时间还没有开启、初始化的时间更少
+    1.2 小文件合并   
+    set hive.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;
+    1.3 合理设置Reuce数量
+2 JVM重用：
+    1. 一般设置task的任务10-20之间
+    2. 修改配置文件:mapreduce.job.jvm.numtasks(mapred-site.xml)
+    3. 减少程序的执行时间
+
 
