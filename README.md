@@ -9,7 +9,7 @@
 ![](img/zookeeper_small.gif)
 - [x] [Day11-13 Hive](Day11Hive/README.md)    
 ![](img/hive_logo_medium.jpg)   
-- [ ] [Day14 Flume]()   
+- [x] [Day14 Flume](Day14Flume/README.md)   
 ![](img/flume-logo.png)
 - [ ] [Day15 Sqoop]()   
 ![](img/sqoop-logo.png)
