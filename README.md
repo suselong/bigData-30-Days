@@ -11,7 +11,7 @@
 ![](img/hive_logo_medium.jpg)   
 - [x] [Day14 Flume](Day14Flume/README.md)   
 ![](img/flume-logo.png)
-- [ ] [Day15 Sqoop]()   
+- [x] [Day15 Sqoop](Day15Sqoop/README.md)   
 ![](img/sqoop-logo.png)
 - [ ] [Day16 Azkaban]()     
 ![](img/azkaban.jpg)
