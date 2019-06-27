@@ -120,7 +120,8 @@ user
 |list-tables|列出某个数据库下的所有表|
 |merge|将HDFS/HIVE中不同目录下的数据合并到一起|
 |version|查看sqoop的版本|
-|help|查看帮助信息|
+|help|查看帮助信息|   
+
 ![](img/help.png)
 ### 常用参数
 |参数|说明|例子|
