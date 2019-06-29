@@ -13,7 +13,7 @@
 ![](img/flume-logo.png)
 - [x] [Day15 Sqoop](Day15Sqoop/README.md)   
 ![](img/sqoop-logo.png)
-- [ ] [Day16 Azkaban]()     
+- [x] [Day16 Azkaban](Day16Azkaban/README.md)     
 ![](img/azkaban.jpg)
 - [ ] [Day17-19 Hbase]()     
 ![](img/hbase_logo_with_orca_large.png)
