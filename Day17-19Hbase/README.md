@@ -185,3 +185,80 @@ cd hd/hbase-1.3.0/
    -> hdfs://HD09-01:9000/love_in/          
    ![](img/case2exec.png)
 #### 案例3： 将hbase中love表进行指定列的筛选，然后导入到lovemr表中
++ 思路：
+> 1. 构建Mapper类，读取love表中的数据    
+> 2. 构建Reducer类，将love表中的数据写入到lovemr表中
+> 3. 构建Diver驱动类
+> 4. 打包 jar包，放入集群中运行这个任务
++ 实现
+1. Mapper类：[ReadLoveMapper](HbaseApi/src/main/java/HbaseMR/ReadLoveMapper.java)
+2. Reducer类：[WriteLoveReducer](HbaseApi/src/main/java/HbaseMR/WriteLoveReducer.java)
+3. Driver类：[LoveDriver](HbaseApi/src/main/java/HbaseMR/LoveDriver.java)
+4.  打包，上传，执行    
+/root/hd/hadoop-2.8.4/bin/yarn jar HbaseTest-2.0.jar(包名) HbaseMR.LoveDriver(主类名)
+5. 测试结果：        
+![](img/testresult.png)
+#### 案例4：HDFS中的数据写入到Hbase
+1. 构建Mapper类，来读取HDFS的数据:[ReadLoveFromHDFSMapper](HbaseApi/src/main/java/HbaseHDFS/ReadLoveFromHDFSMapper.java)
+2. 构建Reducer类：[WriteLoveReducer](HbaseApi/src/main/java/HbaseHDFS/WriteLoveReducer.java)
+3. 构建驱动类Driver：[LoveDriver](HbaseApi/src/main/java/HbaseHDFS/LoveDriver.java)
+4. 打包，上传，执行    
+   /root/hd/hadoop-2.8.4/bin/yarn jar HbaseTest-2.0.jar(包名) HbaseMR.LoveDriver(主类名)
+### 优化方案
++ 真正存储数据的是region需要维护一个区间段的rowKey        
+![](img/root.png)
+#### 预分区优化
++ 手动设置预分区      
+`create 'user_p','info','partition',SPLITS => ['101','102','103','104'] `     
+**注意：分区会比设置的多一个，因为是开区间，会有-∞ ~ +∞**      
+第一个分区 (-∞ ~ 101]        
+第二个分区(101 ~ 102]        
+第三个分区(102 ~ 103]      
+第四个分区(103 ~ 104]        
+第五个分区(104 ~ +∞)     
+![](img/part1.png)      
+![](img/part2.png)
++ 生成16进制序列预分区：
+`create 'user_p_2','info','partition',{NUMREGIONS => 15,SPLITALGO => 'HexStringSplit'}`     
+![](img/part3.png)
++ 按照文件设置的规则来设置预分区
+    1. 创建文件，需要在Hbase的终端目录下，例如是在/root/下执行的hbase shell，则需要放到/root/下       
+    splits.txt      
+    ![](img/splits.png)
+    2. create 'user_p3','info','partition',SPLITS_FILE => 'splits.txt'      
+    ![](img/splits2.png)
+#### rowKey设计优化
+一条数据的唯一标识是rowKey，`此rowKey存储在哪个分区取决于属于哪个预分区内，设计rowKey是为了防止数据倾斜，
+数据均匀分配到每个rowKey中`
++ 生成随机数、hash数、散列值
++ 字符串反转，进行数据打散，尽可能随机       
+例如：     
+201812080011 反转 110080218102        
+201812080012 反转 210080218102
++ 字符串拼接：       
+例如：     
+201812080011  -> 201812080011_asew      
+201812080012  -> 201812080012_obad      
+### 属性优化
++ 内存优化：     
+一般分配70%的内存给hbase的java堆，不建议分配非常大的堆内存，一般内存设置为 16~48GB     
+设置：hadoop-env.sh
+![](img/mem.png)
++ 基础优化
+    1. 优化DataNode的最大文件打开数       
+    设置：hdfs-site.xml        
+    属性：dfs.datanode.max.transfer.threads        
+    默认：4096，设置大于4096        
+    2. 优化延迟高的数据操作时间     
+    设置：hdfs-site.xml        
+    属性：dfs.image.transfer.timeout       
+    默认：60000ms          
+    优化点：调大      
+    4. 数据的写入效率，压缩数据            
+    属性：mapreduce.map.output.commpress       
+    默认：jcp      
+    可以设置：org.apache.hadoop.io.compress.GzipCodec等       
+    5. 设置Hstore的文件大小        
+    属性：hbase.hregion.max.filesize       
+    默认值：10GB        
+    优化点：调小      
