@@ -17,7 +17,7 @@
 ![](img/azkaban.jpg)
 - [x] [Day17-19 Hbase](Day17-19Hbase/README.md)     
 ![](img/hbase_logo_with_orca_large.png)
-- [ ] [Day20 Kafka]()     
+- [x] [Day20 Kafka](Day20Kafka/README.md)     
 ![](img/kafka.png)
 - [ ] [Day21 Storm]()     
 ![](img/storm.png)
