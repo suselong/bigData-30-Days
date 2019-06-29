@@ -115,60 +115,60 @@
 
 ### DDL(数据库定义语言)
 + 创建数据库
-1. 标准：create database if not exists *table_name*;
-2. 创建到hdfs指定路径：create database *table_name* location *'hdfs_path'*;
+1. 标准：CREATE DATABASE IF NOT EXISTS *table_name*;
+2. 创建到hdfs指定路径：CREATE DATABASE *table_name* LOCATION *'hdfs_path'*;
 + 修改数据库
-1. 查询数据库结构：desc database *table_name*;
-2. 添加描述信息：alter database *table_name* dbproperties('描述信息');
-3. 查看拓展信息：desc database extended *table_name*;
+1. 查询数据库结构：DESC DATABASE *table_name*;
+2. 添加描述信息：ALTER DATABASE *table_name*  DBPROPERTIES('描述信息');
+3. 查看拓展信息：DESC DATABASE EXTENDED *table_name*;
 + 查询数据库：
-1. 显示数据库：show database；
-2. 筛选数据库：show database like 'db*';
-+ 删除数据库：drop database if exists *table_name*;
-+ 创建表：create table *table_name(column_name column_type)* row format delimited fields terminated by "\t";
+1. 显示数据库：SHOW DATABASE;
+2. 筛选数据库：SHOW DATABASE LIKE 'db*';
++ 删除数据库：DROP DATABASE IF EXISTS *table_name*;
++ 创建表：CREATE TABLE *table_name(column_name column_type)* ROW FORMAT DELIMITED FIELDS TERMINATED BY *"\t"*;
 + 管理表(内部表)：
 1. 不擅长做数据共享，删除hive中的管理表，数据也同时会删除，hive上面只是表，hdfs上面存储数据
 2. 有数据计算、数据传输的情况会走MR程序，例如计算有多少行、查询数据放入新表等
-3. 加载数据：load data local inpath *'file_path'* into table *table_name*;
-4. 查询的数据插入新表：create table if not exits *new_table_name* as select * from *old_table_name* where column_name='value';
-5. 查询表结构：desc formatted *table_name*;
+3. 加载数据：LOAD DATA LOCAL INPATH *'file_path'* INTO TABLE *table_name*;
+4. 查询的数据插入新表：CREATE TABLE IF NOT EXITS *new_table_name* AS SELECT * FROM *old_table_name* WHERE *column_name='value'*;
+5. 查询表结构：DESC FORMATTED *table_name*;
 + 管理表(外部表)：
 1. Hive不认为这张表拥有这份数据，删除该表，数据不删除，擅长做数据共享
-2. 创建：create external table if not exists *table_name(column_name column_type)* row format delimited fields terminated by "\t";
-3. 删除后重新创建管理表 create table if not exists *table_name(column_name column_type)* row format delimited fields terminated by "\t"; (数据会自动关联)
+2. 创建：CREATE EXTERNAL TABLE IF NOT EXISTS *table_name(column_name column_type)* ROW FORMAT DELIMITED FIELDS TERMINATED BY *"\t"*;
+3. 删除后重新创建管理表 CREATE TABLE IF NOT EXISTS *table_name(column_name column_type)*  ROW FORMAT DELIMITED FIELDS TERMINATED BY *"\t"*; (数据会自动关联)
 + 创建分区表：
-create table *table_name(column_name column_type)* partitioned by (day string) row format delimited fields terminated by '\t';    
+CREATE TABLE *table_name(column_name column_type)* PARTITIONED BY (day string)  ROW FORMAT DELIMITED FIELDS TERMINATED BY *'\t'*;    
 **注：按照时间分区 day string**     
 ![](img/createpartitioned.png)
-+ 导入数据：load data local inpath *'file_path'* into table *table_name* partition(day=*day_value*);      
++ 导入数据：LOAD DATA LOCAL INPATH *'file_path'* INTO TABLE *table_name* PARTITION(day=*day_value*);      
 ![](img/loaddata.png)
-+ 单分区查询：select * from *table_name* where day=*day_value*;   
++ 单分区查询：SELECT * FROM *table_name* WHERE *day=day_value*;   
 **注：不加条件会查询所有的分区数据**    
 ![](img/select01.png)
-+ 添加分区：alter table table_name add partition(day=*day_value*)；
-+ 表结构查询：desc formatted table_name;      
++ 添加分区：ALTER TABLE *table_name* ADD PARTITION(*day=day_value*)；
++ 表结构查询：DESC FORMATTED *table_name*;      
 ![](img/descformat.png)
-+ 删除指定分区表：alter table *table_name* drop partition(day=*day_value*),partition(day=*day_value*);
-+ 修改表名：alter table *table_name* rename to *new_table_name*;
-+ 添加列：alter table *table_name* add columns (*new_column string*);       
++ 删除指定分区表：ALTER TABLE *table_name* DROP PARTITION(day=*day_value*),PARTITION(day=*day_value*);
++ 修改表名：ALTER TABLE *table_name* RENAME TO *new_table_name*;
++ 添加列：ALTER TABLE *table_name* ADD COLUMNS (*new_column string*);       
 ![](img/altertable.png)
-+ 更新列类型：alter table *table_name* change column *old_column new_column int*;
-+ 替换列：alter table *table_name* replace columns(*column_name_new column_type_new*);      
++ 更新列类型：ALTER TABLE *table_name* CHANGE COLUMN *old_column new_column int*;
++ 替换列：ALTER TABLE *table_name* REPLACE COLUMNS(*column_name_new column_type_new*);      
 **注：相当于重定义，原来的数据也会丢失**
 ### DML(数据操控语言)
-+ 本地加载数据：load data local inpath *'file_path'* into table *table_name*;
-+ 加载HDFS数据：load data inpath *'hdfs_path'* into table *database_name.table_name*;      
++ 本地加载数据：LOAD DATA LOCAL INPATH *'file_path'* INTO TABLE *table_name*;
++ 加载HDFS数据：LOAD DATA INPATH *'hdfs_path'* INTO TABLE *database_name.table_name*;      
 注：相当于剪切，把数据剪切到hdfs目录去了
-+ 数据覆盖：loda data local inpath *'file_path'* overwrite into table *table_name*;
-+ 向分区表插入数据：insert into table *table_name* partition(*month='201811'*) values (*value，value*);
-+ 按条件查询后放入新表：create table if not exists *table_name_new* as select * from *table_name* where *column_name = value*;
-+ 创建表的时候导入数据：create table *table_name(column_name column_type)* row format delimited fields terminated by '\t' location *'hdfs_file_path'*;
-+ 数据导出：insert overwrite local directory *'local_file_path'* select * from *table_name* where *column_name = value*;     
++ 数据覆盖：LOAD DATA LOCAL INPATH *'file_path'* OVERWRITE INTO TABLE *table_name*;
++ 向分区表插入数据：INSERT INTO TABLE *table_name* PARTITION(*month='201811'*) VALUES (*value，value*);
++ 按条件查询后放入新表：CREATE TABLE IF NOT EXISTS *table_name_new* AS SELECT * FROM *table_name* WHERE *column_name = value*;
++ 创建表的时候导入数据：CREATE TABLE *table_name(column_name column_type)* ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' LOCATION *'hdfs_file_path'*;
++ 数据导出：INSERT OVERWRITE LOCAL DIRECTORY *'local_file_path'* SELECT * FROM *table_name* WHERE *column_name = value*;     
 ![](img/insertoverwrite.png)
-+ 数据导出(hive shell方式)：bin/hive -e "select * from *table_name*" > *local_file_name*     加where需要外面双引号，里面单引号       
++ 数据导出(hive shell方式)：bin/hive -e "SELECT * FROM *table_name*" > *local_file_name*     加where需要外面双引号，里面单引号       
 ![](img/hiveshell.png)
 + 数据导出(hadoop方式)：dfs -get *hdfs_file_path* *local_file_path*
-+ 清空表格：truncate table *table_name*;
++ 清空表格：TRUNCATE TABLE *table_name*;
 ### 算术运算符
 |运算符|描述|
 |---|---|
@@ -183,12 +183,12 @@ create table *table_name(column_name column_type)* partitioned by (day string) r
 ### 函数
 ![](img/sqlfunction.png)
 ### Where语句使用
-1. 工资大于1700的员工信息：select * from table_name where column_name >1700;
-2. 工资小于1800的员工信息：select * from table_name where column_name <1800;
-3. 查询工资在1500到1800之间的信息：select * from table_name where column_name between 1500 and 1800;
-4. 查询有奖金的员工信息：select * from table_name where column_name is not null;
-5. 查询无奖金的员工信息：select * from table_name where column_name not null；
-6. 查询工资是1700或1900的员工信息：select * from table_name where column_name in(1700,1900);
+1. 工资大于1700的员工信息：SELECT * FROM table_name WHERE column_name >1700;
+2. 工资小于1800的员工信息：SELECT * FROM table_name WHERE column_name <1800;
+3. 查询工资在1500到1800之间的信息：SELECT * FROM table_name WHERE column_name BETWEEN 1500 AND 1800;
+4. 查询有奖金的员工信息：SELECT * FROM table_name WHERE column_name IS NOT NULL;
+5. 查询无奖金的员工信息：SELECT * FROM table_name WHERE column_name NOT NULL；
+6. 查询工资是1700或1900的员工信息：SELECT * FROM table_name WHERE column_name IN(1700,1900);
 ### LIKE使用
 + 使用场景：
 1. 选择类似的值
@@ -258,11 +258,11 @@ SELECT * FROM empt DISTRIBUTE BY deptno SORT BY empno DESC;
     + 分区表分的是数据的存储路径
     + 分桶表分的是文件
 + 分桶表创建     
-create table emp_buck(id int,name string)   
-clustered by(id) --- 通过什么字段分桶   
-into 4 buckets   --- 分为几通   
-row format delimited fields terminated by '\t';     
-+ 清空表格：truncate table table_name;
+CREATE TABLE emp_buck(id int,name string)   
+CLUSTERED by(id) --- 通过什么字段分桶   
+INTO 4 BUCKETS   --- 分为几通   
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';     
++ 清空表格：TRUNCATE TABLE table_name;
 + 设置属性，开启分桶操作：
 1. 查询mapreduce的job配置：set mapreduce.job.reduces;  -1表示未设置reduce数量        
 ![](img/setmap.png)
@@ -303,9 +303,9 @@ public class Lower extends UDF {
 3. 上传到HIVE环境中
 4. 启动HIVE并加载到环境中：add jar /root/lower.jar;       
 ![](img/jaradd.png)
-5. 根据jar关联方法:create temporary function my_lower as "com.along.hive.Lower";     
+5. 根据jar关联方法:CREATE TEMPORARY FUNCTION my_lower AS "com.along.hive.Lower";     
 ![](img/mylower.png)
-6. 使用自定义方法: select ename,my_lower(ename) lowername from empt;       
+6. 使用自定义方法: SELECT ename,my_lower(ename) lowername FROM empt;       
 ![](img/mylower2.png)
 ### Hive优化
 + 开启压缩优化
@@ -321,7 +321,6 @@ public class Lower extends UDF {
     4. 设置Reduc输出压缩的类型：set mapreduce.output.fileoutputformat.compress.type=BLOCK;
     5. 测试：insert overwrite local directory '/root/compross/rsout' select * from empt sort by empno desc;    
     ![](img/yasuotest.png)
-
 + 存储优化
 1. Hive存储格式：TextFile(default)/SequenceFile/orc/Parquet
     1. orc/Parquet：按照列存储
@@ -336,19 +335,19 @@ public class Lower extends UDF {
         1. 查询效率：orc > textFile
 1. 修改Hive存储格式
     2. 创建表，需要指定存储格式     
-    create table itstar_log(time bigint,host string) row format delimited fields terminated by '\t' stored as orc;
-    2. 导入数据到普通表，因为指定了存储格式，不能直接导入        
-    create table itstar_temp(time bigint,host string) row format delimited fields terminated by '\t';       
-    load data local inpath 'root/itstar.log' into table itstar_temp;
+    CREATE TABLE itstar_log(time bigint,host string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS orc;
+    2. 导入数据到普通表，因为指定了存储格式，不能直接导入       
+    CREATE TABLE itstar_temp(time bigint,host string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';      
+    LOAD DATA LOCAL INPATH 'root/itstar.log' INTO TABLE itstar_temp;
     2. 迁移到指定了格式的表中
-    insert into table itstar_log select * from itstar_temp;
+    INSERT INTO TABLE itstar_log SELECT * FROM itstar_temp;
     2. HDFS观察大小
 + GROUP BY优化
     + 背景：mr程序，map程序把相同key的数据分发给一个reduce，若一个key的数量较大，会发生数据倾斜；
     + 解决方案：在Map端进行聚合(combiner)，**在Hive中也有类似功能**
         1. 合并：set hive.map.aggr;   默认true   
         ![](img/hivemap.png)
-        2. 在有可能发生数据倾斜的程序中，可以设置负载均衡      
+        2. 在有可能发生数据倾斜的程序中，可以设置负载均衡     
         set hive.groupby.skewindata=true;       
         该属性可以均衡reduce，会把map的输出结果随机的分配到reduce中
 ### 其他
