@@ -19,7 +19,7 @@
 ![](img/hbase_logo_with_orca_large.png)
 - [x] [Day20 Kafka](Day20Kafka/README.md)     
 ![](img/kafka.png)
-- [ ] [Day21 Storm]()     
+- [x] [Day21 Storm](Day21Storm)     
 ![](img/storm.png)
 - [ ] [Day22 Flink]()     
 ![](img/flink.jpg)
