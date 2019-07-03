@@ -93,8 +93,24 @@ kafka-topics.sh --zookeeper HD09-01:2181 \
 ```
 ![](img/desc.png)
 ### 常用API
-
-
++ [生产者API](KafkaApi/src/main/java/ApiTest/ProducerApi.java)
++ [消费者API](KafkaApi/src/main/java/ApiTest/ConsumerApi.java)
++ [自定义拦截器](KafkaApi/src/main/java/ApiTest/TimeInterceptor.java)
++ [自定义分区](KafkaApi/src/main/java/ApiTest/MyPartition.java)
+### Kafka-Stream
++ 需求：如果字符串中有-，则去掉-和前面的字符
++ 实现：
+    1. 数据清洗类：[LogProcessor](KafkaApi/src/main/java/KafkaStream/LogProcessor.java)
+    2. 实现类：[Application](KafkaApi/src/main/java/KafkaStream/Application.java)
++ 测试：
+    1. 启动实现类
+    2. 创建主题:topic  t1，HD09-01(第一台服务器)       
+    kafka-topics.sh --zookeeper HD09-01:2181 --create --replication-factor 2 --partitions 1 --topic t1
+    3. 启动消费者 HD09-02(第二台服务器)       
+    kafka-console-consumer.sh --bootstrap-server HD09-02:9092 --topic t2 --from-beginning --consumer.config         
+    hd/kafka/config/consumer.properties
+    4. 启动生产者 HD09-03(第三台服务器)        
+    kafka-console-producer.sh --broker-list HD09-01:9092 --topic t1
 
 
 
