@@ -15,11 +15,10 @@ public class WordCountDriver {
     //2. 指定设置
     builder.setSpout( "WordCountSpout", new WordCountSpout(), 1 );
     //3. 指定Blout,设置分组策略
-    builder.setBolt( "WordCoutBloutSplit", new WordCountBloutSplit(), 4 ).
+    builder.setBolt( "WordCountBoltSplit", new WordCountBoltSplit(), 4 ).
         fieldsGrouping( "WordCountSpout", new Fields( "along" ) );
-    builder.setBolt( "WordCountBloutMerge", new WordCountBloutMerge(), 4 ).
-        fieldsGrouping( "WordCoutBloutSplit", new Fields( "word" ) );
-
+    builder.setBolt( "WordCountBoltMerge", new WordCountBoltMerge(), 4 ).
+        fieldsGrouping( "WordCountBoltSplit", new Fields( "word" ) );
 
     //4.创建配置信息
     Config config = new Config();

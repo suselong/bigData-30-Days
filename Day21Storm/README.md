@@ -122,11 +122,19 @@ strom activate [拓扑名]
 全局分组，分配给task id值最小的，根据线程id判断，只分配给线程id最小的
 ![](img/group.png)
 ### 案例1：WordCount
+1. 自定义Spout，接收数据。[WordCountSpout](StromCase/src/main/java/WordCount/WordCountSpout.java)
+2. 自定义一个Bolt，用于切分数据，并传给下一个Blot。[WordCountBoltSplit](StromCase/src/main/java/WordCount/WordCountBoltSplit.java)
+3. 自定义一个Bolt，用于统计单词个数。[WordCountBoltMerge](StromCase/src/main/java/WordCount/WordCountBoltMerge.java)
+4. 自定义驱动类，进行本地任务提交。[WordCountDriver](StromCase/src/main/java/WordCount/WordCountDriver.java)
++ 测试：       
+![](img/wordcase.png)
 ### 案例2：网站PV统计
 + 访问网站日志数据格式        
 ![](img/log.png)
 + 思路
-1. 需要一个Spout，用于读取本地日志数据，一行一行的传输给下一个组件Bolt。[PvCountSpout](StromCase/src/main/java/PVCount/PvCountSpout.java)
-2. 创建一个Bolt，用于切分数据、并进行局部汇总，传输给下一个Bolt。[PvCountSplitBolt](StromCase/src/main/java/PVCount/PvCountSplitBolt.java)
-3. 创建一个Bolt，用于接收上一个组件数据，并进行汇总。[PvCountBolt](StromCase/src/main/java/PVCount/PvCountBolt.java)
-4. 创建驱动类，进行本地任务提交。[PvCountDriver](StromCase/src/main/java/PVCount/PvCountDriver.java)
+1. 自定义一个Spout，用于读取本地日志数据，一行一行的传输给下一个组件Bolt。[PvCountSpout](StromCase/src/main/java/PVCount/PvCountSpout.java)
+2. 自定义一个Bolt，用于切分数据、并进行局部汇总，传输给下一个Bolt。[PvCountSplitBolt](StromCase/src/main/java/PVCount/PvCountSplitBolt.java)
+3. 自定义一个Bolt，用于接收上一个组件数据，并进行汇总。[PvCountBolt](StromCase/src/main/java/PVCount/PvCountBolt.java)
+4. 自定义驱动类，进行本地任务提交。[PvCountDriver](StromCase/src/main/java/PVCount/PvCountDriver.java)
++ 测试：       
+![](img/pv.png)

@@ -32,10 +32,10 @@ public class WordCountSpout extends BaseRichSpout {
   }
 
   /**
-   * 发送数据，收集到数据需要把数据发送处理,发送到Blout里面
+   * 发送数据，收集到数据需要把数据发送处理,发送到Bolt里面
    */
   public void nextTuple() {
-    //1. 发送数据,需要使用两个Blout，一个进行切分，一个进行汇总
+    //1. 发送数据,需要使用两个Bolt，一个进行切分，一个进行汇总
     spoutOutputCollector.emit( new Values( "i an along very shuai along xiaoyu i very shuai an an an an" ) );
 
     //2. 设置延迟，不能太快
@@ -48,7 +48,7 @@ public class WordCountSpout extends BaseRichSpout {
 
   /**
    * 声明描述
-   * @param outputFieldsDeclarer
+   * @param outputFieldsDeclarer 添加描述列，用于下一个组件的读取数据
    */
   public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
     // 起别名

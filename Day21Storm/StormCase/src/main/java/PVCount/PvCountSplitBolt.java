@@ -58,7 +58,7 @@ public class PvCountSplitBolt implements IRichBolt {
    * @param outputFieldsDeclarer
    */
   public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-    outputFieldsDeclarer.declare( new Fields( "session", "sum" ) );
+    outputFieldsDeclarer.declare( new Fields( "threadid", "pvnum" ) );
   }
 
   /**

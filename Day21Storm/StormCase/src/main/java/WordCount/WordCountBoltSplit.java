@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author CDMloong
  */
-public class WordCountBloutSplit extends BaseRichBolt {
+public class WordCountBoltSplit extends BaseRichBolt {
 
   /*
    * 需要继续发送到下一个blot，因此还需要收集器，并且修改作用域

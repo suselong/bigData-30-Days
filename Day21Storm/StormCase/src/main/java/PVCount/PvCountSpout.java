@@ -13,21 +13,39 @@ import java.util.Map;
 /**
  * @author CDMloong
  */
-public class PvCountSpout implements IRichSpout{
-  private SpoutOutputCollector spoutOutputCollector;
-  private BufferedReader content;
-  private String line;
+public class PvCountSpout implements IRichSpout {
+  private BufferedReader br;
+  private SpoutOutputCollector collector;
+
+  /**
+   * 描述声明
+   *
+   * @param outputFieldsDeclarer
+   */
+  public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+    outputFieldsDeclarer.declare(new Fields("logs"));
+  }
+
+  /**
+   * 加入一些配置
+   *
+   * @return
+   */
+  public Map<String, Object> getComponentConfiguration() {
+    return null;
+  }
 
   /**
    * 收集器，用于接收数据
+   *
    * @param map
    * @param topologyContext
    * @param spoutOutputCollector
    */
   public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
-    this.spoutOutputCollector = spoutOutputCollector;
+    collector = spoutOutputCollector;
     try {
-      content = new BufferedReader( new InputStreamReader( new FileInputStream( "E:/weblog.log" ) ) );
+      br = new BufferedReader(new InputStreamReader(new FileInputStream("Day21Storm\\StormCase\\src\\main\\resources\\in\\weblog.log")));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -38,6 +56,7 @@ public class PvCountSpout implements IRichSpout{
    */
   public void close() {
   }
+
   /**
    * 激活已经被禁止的拓扑
    */
@@ -55,18 +74,17 @@ public class PvCountSpout implements IRichSpout{
    * 发送数据
    */
   public void nextTuple() {
-    // 发送数据
-    while (true) {
-      try {
-        if (((line = content.readLine()) != null)) break;
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      spoutOutputCollector.emit( new Values( content ) );
-    }
-    //延迟时间
+    //发送读取的数据的每一行
     try {
-      Thread.sleep( 500 );
+      String line;
+      while((line = br.readLine()) != null) {
+        //发送数据到splitbolt
+        collector.emit(new Values(line));
+        //设置延迟
+        Thread.sleep(500);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -74,6 +92,7 @@ public class PvCountSpout implements IRichSpout{
 
   /**
    * 回调方法，用于发送到下个组件成功后回调
+   *
    * @param o
    */
   public void ack(Object o) {
@@ -82,24 +101,9 @@ public class PvCountSpout implements IRichSpout{
 
   /**
    * 失败后回调
+   *
    * @param o
    */
   public void fail(Object o) {
-  }
-
-  /**
-   * 描述声明
-   * @param outputFieldsDeclarer
-   */
-  public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-    outputFieldsDeclarer.declare( new Fields( "logs" ) );
-  }
-
-  /**
-   * 加入一些配置
-   * @return
-   */
-  public Map<String, Object> getComponentConfiguration() {
-    return null;
   }
 }
