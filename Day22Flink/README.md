@@ -77,4 +77,16 @@ source /etc/profile
 6. 启动集群     
 ![](img/start-cluster.png)
 ### 案例-单词统计
-
++ [代码](WordCountFlink/src/main/java/WordCount/SocketWordCount.java)
++ 本地测试
+    1. 安装nc(瑞士军刀)：yum install nc
+    2. 打开代码指定端口：nc -lk -p 3333
+    3. 运行结果     
+    ![](img/localresult.png)
++ 集群测试
+    1. 代码打包     
+    ![](img/package.png)        
+    ![](img/jar.png)
+    2. 上传到集群，并运行：flink run -c WordCount.SocketWordCount /root/flinkTest-1.0-SNAPSHOT.jar
+    3. 运行结果     
+    ![](img/serverresult.png)

@@ -21,7 +21,7 @@
 ![](img/kafka.png)
 - [x] [Day21 Storm](Day21Storm)     
 ![](img/storm.png)
-- [ ] [Day22 Flink]()     
+- [x] [Day22 Flink](Day22Flink)     
 ![](img/flink.jpg)
 - [ ] [Day23-27 Scala]()     
 ![](img/Scala_logo.png)
